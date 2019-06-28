@@ -1,13 +1,13 @@
 # syntax-based-completion
 
-[![Travis][build-badge]][build]
+[![Circe CI][build-badge]][build]
 [![npm package][npm-badge]][npm]
 [![Coveralls][coveralls-badge]][coveralls]
 
 Describe syntax-based-completion here.
 
-[build-badge]: https://img.shields.io/travis/user/repo/master.png?style=flat-square
-[build]: https://travis-ci.org/user/repo
+[build-badge]: https://circleci.com/gh/jrfferreira/syntax-based-completion.svg?style=svg
+[build]: https://circleci.com/gh/jrfferreira/syntax-based-completion
 
 [npm-badge]: https://img.shields.io/npm/v/npm-package.png?style=flat-square
 [npm]: https://www.npmjs.org/package/npm-package
