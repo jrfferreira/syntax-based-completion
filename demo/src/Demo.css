@@ -1,0 +1,37 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: #282c34;
+}
+
+.Demo {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+}
+
+.Demo section {
+    margin-bottom: 5rem;
+}
+
+.Demo-pre mark {
+    color: #61dafb;
+    background: none;
+}
+
+.Demo-pre {
+    display: inline;
+    font-size: 0.85rem;
+    float: right;
+}
+
+.Demo-input {
+    width: 40vw;
+    font-size: 2rem;
+    padding: .4rem 1rem;
+    display: block;
+    font-weight: 400;
+}
