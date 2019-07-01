@@ -30,11 +30,21 @@
     "ebnf": "^1.6.3",
     "prop-types": "^15.7.2"
   },
-  "author": "",
-  "homepage": "",
+  "author": "jrfferreira",
+  "homepage": "https://github.com/jrfferreira/syntax-based-completion#readme",
   "license": "MIT",
-  "repository": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jrfferreira/syntax-based-completion.git"
+  },
   "keywords": [
     "react-component"
-  ]
+  ],
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "bugs": {
+    "url": "https://github.com/jrfferreira/syntax-based-completion/issues"
+  }
 }
