@@ -7,16 +7,11 @@
     position: relative;
 }
 
-.query-suggestion-input {
-    padding: .3rem;
-    font-family: inherit;
-    font-size: inherit;
-    font-stretch: inherit;
-}
+.query-suggestion-input { }
 
 .query-suggestion-input.error {
-    border: 1px solid #d0203;
-    outline-color: #d0203;
+    border: 1px solid #d0203d;
+    outline-color: #d0203d;
 }
 
 .query-suggestion-error {

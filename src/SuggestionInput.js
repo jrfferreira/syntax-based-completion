@@ -81,7 +81,7 @@ export default class SuggestionInput extends React.Component {
     const output = shouldUpdateOutput
       ? new Node(this.parser.getAST(sentence))
       : this.state.output;
-    console.log(output);
+
     return output;
   };
 
@@ -258,7 +258,7 @@ export default class SuggestionInput extends React.Component {
     if (!this.state.focusingList) this.onClose();
   };
 
-  onSelect = newValue => {
+  onSelect = (newValue = "") => {
     const sentence = this.props.value;
     const node = this.state.currentNode;
     const newSentence =
