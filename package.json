@@ -1,6 +1,6 @@
 {
   "name": "syntax-based-completion",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "syntax-based-completion React component",
   "main": "lib/index.js",
   "module": "es/index.js",
