@@ -14,3 +14,8 @@ Describe syntax-based-completion here.
 
 [coveralls-badge]: https://img.shields.io/coveralls/user/repo/master.png?style=flat-square
 [coveralls]: https://coveralls.io/github/user/repo
+
+## TODO List:
+
+[] Allow node deletion with `Shift+backspace`
+[] Allow selection replacement

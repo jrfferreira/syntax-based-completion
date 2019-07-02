@@ -5,10 +5,6 @@
 
 .query-suggestion {
     position: relative;
-    display: inline-block;
-    font-family: Arial;
-    font-size: auto;
-    font-stretch: normal;
 }
 
 .query-suggestion-input {
@@ -16,6 +12,22 @@
     font-family: inherit;
     font-size: inherit;
     font-stretch: inherit;
+}
+
+.query-suggestion-input.error {
+    border: 1px solid #d0203;
+    outline-color: #d0203;
+}
+
+.query-suggestion-error {
+    position: absolute;
+    background: #d0203d;
+    width: 100%;
+    display: block;
+    color: #fff;
+    font-size: .8rem;
+    padding: .2rem .5rem;
+    margin-top: -1px;
 }
 
 .query-suggestion-loading {
@@ -26,6 +38,7 @@
 .query-suggestion-list {
     list-style-type: none;
     margin: 0;
+    margin-top: -1px;
     padding: 0;
     position: absolute;
     width: 100%;
@@ -35,6 +48,9 @@
     border-top: 0;
     background-color: #fff;
     box-shadow: 0 2px 6px -5px black;
+
+    max-height: 60vh;
+    overflow: auto;
 }
 
 .query-suggestion-item {

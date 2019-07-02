@@ -24,14 +24,6 @@ export default class SuggestionInput extends React.Component {
     value: ""
   };
 
-  state = {
-    focusingList: false,
-    active: 0,
-    showSuggestions: false,
-    suggestions: [],
-    output: null
-  };
-
   fetcher;
   parser;
   input;
@@ -40,75 +32,146 @@ export default class SuggestionInput extends React.Component {
     super(props);
     this.input = null;
     this.fetcher = null;
-    this.parser = new Grammars.BNF.Parser(props.syntax);
 
     this.state = {
       suggestions: [],
       fetchingSuggestions: false,
-      output: this.getOutput(props.value),
-      cursorPosition: props.value.length
+      cursorPosition: props.value.length,
+      focusingList: false,
+      active: 0,
+      showSuggestions: false,
+      suggestions: [],
+      error: null,
+      output: null
     };
+  }
+
+  componentDidMount() {
+    this.setupParser();
   }
 
   // Helpers
 
-  getOutput = sentence => {
-    return new Node(this.parser.getAST(sentence));
+  setupParser = async () => {
+    this.parser = new Grammars.BNF.Parser(this.props.syntax);
+    const output = this.getOutput(this.props.value);
+    const error = this.checkForErrors(output);
+
+    this.setState({
+      output,
+      error
+    });
   };
 
-  updateReferences = (silent = false) => {
+  checkForErrors = output => {
+    if (output.errors && output.errors.length) {
+      return output.errors[0].message;
+    }
+    return null;
+  };
+
+  delayAction = async action => {
+    clearTimeout(this.fetcher);
+    this.fetcher = setTimeout(action, this.props.delay);
+  };
+
+  getOutput = sentence => {
+    const shouldUpdateOutput =
+      !this.state.output || sentence !== this.state.output.text;
+    const output = shouldUpdateOutput
+      ? new Node(this.parser.getAST(sentence))
+      : this.state.output;
+    console.log(output);
+    return output;
+  };
+
+  updateReferences = async (silent = false) => {
     const sentence = this.input.value;
     const cursorPosition = isFinite(this.input.selectionStart)
       ? this.input.selectionStart
       : sentence.length;
     const changedCursor = cursorPosition !== this.state.cursorPosition;
-    const changedSentence = sentence !== this.props.value;
-    if (changedCursor || changedSentence) {
-      const output = changedSentence
-        ? this.getOutput(sentence)
-        : this.state.output;
+    const shouldUpdateOutput =
+      !this.state.output || sentence !== this.state.output.text;
 
-      const currentNode = output.findChildByPosition(cursorPosition);
-
+    if (!silent) {
       this.setState({
-        cursorPosition,
-        output,
-        currentNode,
-        showSuggestions: silent ? false : this.state.showSuggestions,
-        suggestions: [],
-        active: 0
+        loading: true
       });
+    }
 
-      if (!silent) this.checkForSuggestions(currentNode);
+    if (changedCursor || shouldUpdateOutput) {
+      this.delayAction(() => {
+        const output = this.getOutput(sentence);
+        const error = this.checkForErrors(output);
+
+        this.delayAction(() => {
+          const currentNode = error
+            ? output
+            : output.findChildByPosition(cursorPosition);
+
+          this.setState({
+            cursorPosition,
+            output,
+            error,
+            currentNode,
+            showSuggestions:
+              silent || error ? false : this.state.showSuggestions,
+            active: 0
+          });
+
+          if (!silent && !error) this.checkForSuggestions(currentNode);
+        });
+      });
     }
   };
 
-  checkForSuggestions = (currentNode = this.state.currentNode) => {
+  sortSuggestions = suggestions => {
+    const { text } = this.state.currentNode;
+
+    if (!suggestions || suggestions.length === 0) return [];
+    if (!text) return suggestions;
+
+    var results = suggestions.reduce(
+      function(res, suggestion) {
+        var pos = suggestion.toLowerCase().indexOf(text.toLowerCase());
+        if (pos === 0) {
+          res[0].push(suggestion);
+        } else if (pos > 0) {
+          res[1].push(suggestion);
+        } else {
+          res[2].push(suggestion);
+        }
+        return res;
+      },
+      [[], [], []]
+    );
+    return [...results[0], ...results[1], ...results[2]];
+  };
+
+  checkForSuggestions = async (currentNode = this.state.currentNode) => {
     this.setState({
       showSuggestions: true,
       fetchingSuggestions: true
     });
 
-    clearTimeout(this.fetcher);
-    this.fetcher = setTimeout(
-      () =>
-        this.props
-          .fetchSuggestions(currentNode)
-          .then((suggestions = []) => {
-            this.setState({
-              suggestions,
-              fetchingSuggestions: false
-            });
-          })
-          .catch(_ => {
-            this.setState({
-              suggestions: [],
-              showSuggestions: false,
-              fetchingSuggestions: false
-            });
-          }),
-      this.props.delay
-    );
+    this.delayAction(() => {
+      this.props
+        .fetchSuggestions(currentNode)
+        .then((suggestions = []) => {
+          this.setState({
+            suggestions: this.sortSuggestions(suggestions),
+            fetchingSuggestions: false
+          });
+        })
+        .catch(_ => {
+          this.setState({
+            suggestions: [],
+            showSuggestions: false,
+            fetchingSuggestions: false
+          });
+        });
+    });
   };
 
   navigateDown = () => {
@@ -161,12 +224,12 @@ export default class SuggestionInput extends React.Component {
   };
 
   onChange = _ => {
-    this.updateReferences();
+    this.delayAction(this.updateReferences);
     if (this.props.onChange)
       this.props.onChange(this.input.value, this.state.currentNode);
   };
 
-  onKeyDown = e => {
+  onKeyUp = e => {
     switch (e.key) {
       case COMMANDS.LEFT:
       case COMMANDS.RIGHT:
@@ -211,7 +274,7 @@ export default class SuggestionInput extends React.Component {
 
     this.input.focus();
     this.input.setSelectionRange(newSelectionStart, newSelectionStart);
-    this.updateReferences(true);
+    this.onClose();
   };
 
   // Renders
@@ -236,6 +299,13 @@ export default class SuggestionInput extends React.Component {
     );
   };
 
+  renderErrors = () => {
+    if (this.state.error) {
+      return <div className="query-suggestion-error">{this.state.error}</div>;
+    }
+    return;
+  };
+
   render() {
     const {
       onChange,
@@ -248,16 +318,25 @@ export default class SuggestionInput extends React.Component {
     return (
       <div className="query-suggestion">
         <input
-          className={this.props.className + " query-suggestion-input"}
           {...props}
+          className={
+            this.props.className +
+            " query-suggestion-input" +
+            (this.state.error ? " error" : "")
+          }
           ref={node => {
             this.input = node;
           }}
+          readOnly={!this.parser || this.props.readOnly}
+          placeholder={
+            !this.parser ? "Parsing syntax..." : this.props.placeholder
+          }
           onBlur={this.onBlur}
           onMouseUp={this.onMouseUp}
-          onKeyDown={this.onKeyDown}
+          onKeyUp={this.onKeyUp}
           onChange={this.onChange}
         />
+        {this.renderErrors()}
         {this.renderSuggestions()}
       </div>
     );

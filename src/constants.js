@@ -7,5 +7,5 @@ export const COMMANDS = {
   ESC: "Escape"
 };
 
-export const DELAY = 300;
+export const DELAY = 100;
 export const STEPS = 1;
