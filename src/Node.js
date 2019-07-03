@@ -4,14 +4,18 @@ export default class Node {
     this.text = props.text; // string;
     this.start = props.start; // number;
     this.end = props.end; // number;
-    this.children = props.children || []; // IToken[];
     this.parent = props.parent; // IToken;
     this.fullText = props.fullText; // string;
     this.errors = props.errors; // TokenError[];
     this.rest = props.rest; // string;
     this.fragment = props.fragment; // boolean;
     this.lookup = props.lookup; // boolean;
+    this.children = props.children || []; // IToken[];
   }
+
+  //get children() {
+  //  return this._children.map(c => new Node(c));
+  //}
 
   findChildByPosition = pos => {
     if (this.children && this.children.length) {

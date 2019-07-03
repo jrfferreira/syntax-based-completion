@@ -1,12 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Grammars } from "ebnf";
+import Parser from "./Parser";
 
 import "./SuggestionInput.css";
 
 import SuggestionList from "./SuggestionList";
-import Node from "./Node";
-
 import { COMMANDS, DELAY, STEPS } from "./constants";
 
 export default class SuggestionInput extends React.Component {
@@ -53,7 +51,7 @@ export default class SuggestionInput extends React.Component {
   // Helpers
 
   setupParser = async () => {
-    this.parser = new Grammars.BNF.Parser(this.props.syntax);
+    this.parser = new Parser(this.props.syntax);
     const output = this.getOutput(this.props.value);
     const error = this.checkForErrors(output);
 
@@ -79,7 +77,7 @@ export default class SuggestionInput extends React.Component {
     const shouldUpdateOutput =
       !this.state.output || sentence !== this.state.output.text;
     const output = shouldUpdateOutput
-      ? new Node(this.parser.getAST(sentence))
+      ? this.parser.parse(sentence)
       : this.state.output;
 
     return output;
@@ -225,8 +223,7 @@ export default class SuggestionInput extends React.Component {
 
   onChange = _ => {
     this.delayAction(this.updateReferences);
-    if (this.props.onChange)
-      this.props.onChange(this.input.value, this.state.currentNode);
+    if (this.props.onChange) this.props.onChange(this.input.value);
   };
 
   onKeyUp = e => {
@@ -270,11 +267,12 @@ export default class SuggestionInput extends React.Component {
     const newSelectionStart = node.start + String(newValue).length;
 
     this.input.value = newSentence;
-    if (this.props.onChange) this.props.onChange(newSentence);
 
     this.input.focus();
     this.input.setSelectionRange(newSelectionStart, newSelectionStart);
     this.onClose();
+
+    if (this.props.onChange) this.props.onChange(newSentence);
   };
 
   // Renders
