@@ -1,6 +1,6 @@
 {
   "name": "syntax-based-completion",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "syntax-based-completion React component",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -26,9 +26,9 @@
     "react-dom": "^16.8.6"
   },
   "peerDependencies": {
-    "react": "16.x",
     "ebnf": "^1.6.3",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react": "16.x"
   },
   "devDependencies": {
     "nwb": "0.23.x"
