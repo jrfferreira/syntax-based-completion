@@ -1,7 +1,7 @@
 import React from "react";
 import "./Demo.css";
 
-import SuggestionInput from "../../src/SuggestionInput";
+import SuggestionInput from "../../src/";
 
 const SYNTAX = `
 <SYNTAX>           ::= <query>
@@ -58,7 +58,6 @@ class Demo extends React.Component {
       currentNode: node
     });
 
-    console.log(node);
     const { type } = node;
     return new Promise((resolve, _) => {
       let response;

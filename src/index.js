@@ -1,4 +1,4 @@
-import SuggestionInput from "./SuggestionInput";
+import CompletionInput from "./CompletionInput";
 
 export * from "./utils";
-export default SuggestionInput;
+export default CompletionInput;

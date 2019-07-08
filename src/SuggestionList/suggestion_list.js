@@ -1,7 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import LoadingSpinner from "./LoadingSpinner";
+import "./suggestion_list.css";
+
+import LoadingSpinner from "../LoadingSpinner";
 
 export default class SuggestionList extends React.Component {
   static propTypes = {
@@ -24,33 +26,36 @@ export default class SuggestionList extends React.Component {
     this.props.onSelect(suggestion);
   };
 
+  renderSuggestion = (suggestion, index) => {
+    let active = index === this.props.active;
+    let selected = suggestion === this.props.selected;
+    let itemClassName = `SuggestionList__item${
+      active ? "--active" : selected ? "--selected" : ""
+    }`;
+    return (
+      <li
+        key={suggestion}
+        className={itemClassName}
+        onClick={this.onClickSuggestion(suggestion)}
+      >
+        {suggestion}
+      </li>
+    );
+  };
+
   render() {
     return (
       <ul
-        className="query-suggestion-list"
+        className="SuggestionList"
         onMouseEnter={this.props.onMouseEnter}
         onMouseLeave={this.props.onMouseLeave}
       >
         {this.props.loading ? (
-          <div className="query-suggestion-loading">
+          <div className="SuggestionList__loading">
             <LoadingSpinner />
           </div>
         ) : (
-          this.props.suggestions.map((suggestion, index) => {
-            const active = index === this.props.active;
-            const selected = suggestion === this.props.selected;
-            return (
-              <li
-                key={suggestion}
-                className={`query-suggestion-item ${active ? "active" : ""} ${
-                  selected ? "selected" : ""
-                }`}
-                onClick={this.onClickSuggestion(suggestion)}
-              >
-                {suggestion}
-              </li>
-            );
-          })
+          this.props.suggestions.map(this.renderSuggestion)
         )}
       </ul>
     );

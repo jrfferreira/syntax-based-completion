@@ -1,4 +1,4 @@
-export default class Node {
+export class Node {
   constructor(props) {
     this.type = props.type; // string;
     this.text = props.text; // string;

@@ -1,7 +1,7 @@
 import { Grammars } from "ebnf";
-import Node from "./Node";
+import { Node } from "./node";
 
-export default class Parser {
+export class Parser {
   grammar = null;
 
   constructor(syntax, options) {

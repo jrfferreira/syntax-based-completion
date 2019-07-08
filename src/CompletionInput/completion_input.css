@@ -1,0 +1,24 @@
+.CompletionInput,
+.CompletionInput * {
+    box-sizing: border-box;
+}
+
+.CompletionInput {
+    position: relative;
+}
+
+.CompletionInput__input--error {
+    border: 1px solid #d0203d;
+    outline-color: #d0203d;
+}
+
+.CompletionInput__error {
+    position: absolute;
+    background: #d0203d;
+    width: 100%;
+    display: block;
+    color: #fff;
+    font-size: .8rem;
+    padding: .2rem .5rem;
+    margin-top: -1px;
+}

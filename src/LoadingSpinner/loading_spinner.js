@@ -1,5 +1,5 @@
 import React from "react";
-import "./LoadingSpinner.css";
+import "./loading_spinner.css";
 
 export default class LoadingSpinner extends React.PureComponent {
   render() {

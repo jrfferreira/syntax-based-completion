@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Parser from "./Parser";
+import { Parser } from "../utils";
 
-import "./SuggestionInput.css";
+import "./completion_input.css";
 
-import SuggestionList from "./SuggestionList";
-import { COMMANDS, DELAY, STEPS } from "./constants";
+import SuggestionList from "../SuggestionList";
+import { COMMANDS, DELAY, STEPS } from "../constants";
 
-export default class SuggestionInput extends React.Component {
+export default class CompletionInput extends React.Component {
   static propTypes = {
     syntax: PropTypes.string.isRequired,
     value: PropTypes.string,
@@ -299,7 +299,7 @@ export default class SuggestionInput extends React.Component {
 
   renderErrors = () => {
     if (this.state.error) {
-      return <div className="query-suggestion-error">{this.state.error}</div>;
+      return <div className="CompletionInput__error">{this.state.error}</div>;
     }
     return;
   };
@@ -314,13 +314,13 @@ export default class SuggestionInput extends React.Component {
     } = this.props;
 
     return (
-      <div className="query-suggestion">
+      <div className="CompletionInput">
         <input
           {...props}
           className={
             this.props.className +
-            " query-suggestion-input" +
-            (this.state.error ? " error" : "")
+            " CompletionInput__input" +
+            (this.state.error ? "--error" : "")
           }
           ref={node => {
             this.input = node;
