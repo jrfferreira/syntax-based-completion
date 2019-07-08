@@ -13,7 +13,10 @@ export default class CompletionInput extends React.Component {
     value: PropTypes.string,
     delay: PropTypes.number,
     onChange: PropTypes.func,
-    fetchSuggestions: PropTypes.func.isRequired
+    fetchSuggestions: PropTypes.func.isRequired,
+    className: PropTypes.className,
+    readOnly: PropTypes.boolean,
+    placeholder: PropTypes.string
   };
 
   static defaultProps = {
@@ -38,7 +41,6 @@ export default class CompletionInput extends React.Component {
       focusingList: false,
       active: 0,
       showSuggestions: false,
-      suggestions: [],
       error: null,
       output: null
     };
@@ -162,7 +164,7 @@ export default class CompletionInput extends React.Component {
             fetchingSuggestions: false
           });
         })
-        .catch(_ => {
+        .catch(() => {
           this.setState({
             suggestions: [],
             showSuggestions: false,
@@ -221,29 +223,29 @@ export default class CompletionInput extends React.Component {
     e.preventDefault();
   };
 
-  onChange = _ => {
+  onChange = () => {
     this.delayAction(this.updateReferences);
     if (this.props.onChange) this.props.onChange(this.input.value);
   };
 
   onKeyUp = e => {
     switch (e.key) {
-      case COMMANDS.LEFT:
-      case COMMANDS.RIGHT:
-        this.updateReferences();
-        break;
-      case COMMANDS.UP:
-      case COMMANDS.DOWN:
-        this.onNavigate(e);
-        break;
-      case COMMANDS.ENTER:
-        this.onPressEnter();
-        break;
-      case COMMANDS.ESC:
-        this.onClose();
-        break;
-      default:
-        break;
+    case COMMANDS.LEFT:
+    case COMMANDS.RIGHT:
+      this.updateReferences();
+      break;
+    case COMMANDS.UP:
+    case COMMANDS.DOWN:
+      this.onNavigate(e);
+      break;
+    case COMMANDS.ENTER:
+      this.onPressEnter();
+      break;
+    case COMMANDS.ESC:
+      this.onClose();
+      break;
+    default:
+      break;
     }
   };
 
@@ -251,7 +253,7 @@ export default class CompletionInput extends React.Component {
     if (e.target === this.input) this.updateReferences();
   };
 
-  onBlur = e => {
+  onBlur = () => {
     if (!this.state.focusingList) this.onClose();
   };
 
@@ -306,10 +308,9 @@ export default class CompletionInput extends React.Component {
 
   render() {
     const {
-      onChange,
-      syntax,
-      onChangeNode,
-      fetchSuggestions,
+      onChange, // eslint-disable-line no-unused-vars
+      syntax, // eslint-disable-line no-unused-vars
+      fetchSuggestions, // eslint-disable-line no-unused-vars
       ...props
     } = this.props;
 
