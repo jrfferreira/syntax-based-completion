@@ -155,23 +155,25 @@ export default class CompletionInput extends React.Component {
       fetchingSuggestions: true
     });
 
-    this.delayAction(() => {
-      this.props
-        .fetchSuggestions(currentNode)
-        .then((suggestions = []) => {
-          this.setState({
-            suggestions: this.sortSuggestions(suggestions),
-            fetchingSuggestions: false
+    if (!!this.props.fetchSuggestions) {
+      this.delayAction(() => {
+        this.props
+          .fetchSuggestions(currentNode)
+          .then((suggestions = []) => {
+            this.setState({
+              suggestions: this.sortSuggestions(suggestions),
+              fetchingSuggestions: false
+            });
+          })
+          .catch(() => {
+            this.setState({
+              suggestions: [],
+              showSuggestions: false,
+              fetchingSuggestions: false
+            });
           });
-        })
-        .catch(() => {
-          this.setState({
-            suggestions: [],
-            showSuggestions: false,
-            fetchingSuggestions: false
-          });
-        });
-    });
+      });
+    }
   };
 
   navigateDown = () => {
@@ -230,22 +232,22 @@ export default class CompletionInput extends React.Component {
 
   onKeyUp = e => {
     switch (e.key) {
-    case COMMANDS.LEFT:
-    case COMMANDS.RIGHT:
-      this.updateReferences();
-      break;
-    case COMMANDS.UP:
-    case COMMANDS.DOWN:
-      this.onNavigate(e);
-      break;
-    case COMMANDS.ENTER:
-      this.onPressEnter();
-      break;
-    case COMMANDS.ESC:
-      this.onClose();
-      break;
-    default:
-      break;
+      case COMMANDS.LEFT:
+      case COMMANDS.RIGHT:
+        this.updateReferences();
+        break;
+      case COMMANDS.UP:
+      case COMMANDS.DOWN:
+        this.onNavigate(e);
+        break;
+      case COMMANDS.ENTER:
+        this.onPressEnter();
+        break;
+      case COMMANDS.ESC:
+        this.onClose();
+        break;
+      default:
+        break;
     }
   };
 

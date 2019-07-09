@@ -1,37 +1,64 @@
 body {
-    font-family: 'Raleway', sans-serif;
-    background-color: #282c34;
+  font-family: "Raleway", sans-serif;
+  background-color: #282c34;
 }
 
 .Demo {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .Demo section {
+  margin-bottom: 2rem;
+  width: 40vw;
+}
+
+.Demo section:last-of-type {
     margin-bottom: 5rem;
 }
 
 .Demo-pre mark {
-    color: #61dafb;
-    background: none;
+  color: #61dafb;
+  background: none;
 }
 
 .Demo-pre {
-    display: inline;
-    font-size: 0.85rem;
-    float: right;
+  display: inline;
+  font-size: 0.85rem;
+  float: right;
+}
+
+.Demo-help pre {
+  color: #f0f0f0;
+  background: none;
+  font-weight: bold;
+  display: inline;
+}
+
+.Demo-help {
+  display: inline;
+  font-size: 1rem;
 }
 
 .Demo-input {
-    width: 40vw;
-    font-size: 2rem;
-    padding: .4rem 1rem;
-    display: block;
-    font-weight: 400;
+  font-size: 2rem;
+  padding: 0.4rem 1rem;
+  display: block;
+  font-weight: 400;
+  width: 100%;
+}
+
+.Demo-syntax {
+  display: block;
+  font-size: 0.75rem;
+  line-height: 0.9rem;
+  border: 1px solid;
+  padding: 2rem;
+  width: auto;
+  overflow-x: auto;
 }
