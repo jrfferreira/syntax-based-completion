@@ -9,6 +9,6 @@ export class Parser {
   }
 
   parse(sentence) {
-    return new Node(this.grammar.getAST(sentence));
+    return new Node(this.grammar.getAST(sentence) || {});
   }
 }

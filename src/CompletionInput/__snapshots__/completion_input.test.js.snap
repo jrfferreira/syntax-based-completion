@@ -11,8 +11,6 @@ exports[`<CompletionInput> shallow render empty 1`] = `
     onChange={[Function]}
     onKeyUp={[Function]}
     onMouseUp={[Function]}
-    placeholder="Parsing syntax..."
-    readOnly={true}
     value=""
   />
 </div>

@@ -82,49 +82,51 @@ export default class CompletionInput extends React.Component {
     const output = shouldUpdateOutput
       ? this.parser.parse(sentence)
       : this.state.output;
-
     return output;
   };
 
-  updateReferences = async (silent = false) => {
-    const sentence = this.input.value;
-    const cursorPosition = isFinite(this.input.selectionStart)
+  getInputCursorPosition = () =>
+    isFinite(this.input.selectionStart)
       ? this.input.selectionStart
-      : sentence.length;
+      : this.input.value.length;
+
+  checkReferences = async (silent = false) => {
+    const sentence = this.input.value;
+    const cursorPosition = this.getInputCursorPosition();
     const changedCursor = cursorPosition !== this.state.cursorPosition;
     const shouldUpdateOutput =
-      !this.state.output || sentence !== this.state.output.text;
-
-    if (!silent) {
-      this.setState({
-        loading: true
-      });
-    }
+      !this.state.output ||
+      sentence !== `${this.state.output.text}${this.state.output.rest}`;
 
     if (changedCursor || shouldUpdateOutput) {
-      this.delayAction(() => {
-        const output = this.getOutput(sentence);
-        const error = this.checkForErrors(output);
-
-        this.delayAction(() => {
-          const currentNode = error
-            ? output
-            : output.findChildByPosition(cursorPosition);
-
-          this.setState({
-            cursorPosition,
-            output,
-            error,
-            currentNode,
-            showSuggestions:
-              silent || error ? false : this.state.showSuggestions,
-            active: 0
-          });
-
-          if (!silent && !error) this.checkForSuggestions(currentNode);
+      if (!silent) {
+        this.setState({
+          loading: true
         });
-      });
+      }
+      return this.delayAction(() => this.updateReferences(silent));
     }
+  };
+
+  updateReferences = (silent = false) => {
+    const output = this.getOutput(this.input.value);
+    const error = this.checkForErrors(output);
+    const cursorPosition = this.getInputCursorPosition();
+
+    const currentNode = error
+      ? output
+      : output.findChildByPosition(cursorPosition);
+
+    this.setState({
+      cursorPosition,
+      output,
+      error,
+      currentNode,
+      showSuggestions: silent || error ? false : this.state.showSuggestions,
+      active: 0
+    });
+
+    if (!silent && !error) this.checkForSuggestions(currentNode);
   };
 
   sortSuggestions = suggestions => {
@@ -228,7 +230,7 @@ export default class CompletionInput extends React.Component {
   };
 
   onChange = () => {
-    this.delayAction(this.updateReferences);
+    this.delayAction(this.checkReferences);
     if (this.props.onChange) this.props.onChange(this.input.value);
   };
 
@@ -236,7 +238,7 @@ export default class CompletionInput extends React.Component {
     switch (e.key) {
       case COMMANDS.LEFT:
       case COMMANDS.RIGHT:
-        this.updateReferences();
+        this.checkReferences();
         break;
       case COMMANDS.UP:
       case COMMANDS.DOWN:
@@ -254,7 +256,7 @@ export default class CompletionInput extends React.Component {
   };
 
   onMouseUp = e => {
-    if (e.target === this.input) this.updateReferences();
+    if (e.target === this.input) this.checkReferences();
   };
 
   onBlur = () => {
