@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SuggestionList> shallow render loading 1`] = `
+<ul
+  className="SuggestionList"
+>
+  <div
+    className="SuggestionList__loading"
+  >
+    <LoadingSpinner />
+  </div>
+</ul>
+`;
+
+exports[`<SuggestionList> shallow render with active and selected suggestions 1`] = `
+<ul
+  className="SuggestionList"
+>
+  <li
+    className="SuggestionList__item--selected"
+    key="Foo"
+    onClick={[Function]}
+  >
+    Foo
+  </li>
+  <li
+    className="SuggestionList__item--active"
+    key="Bar"
+    onClick={[Function]}
+  >
+    Bar
+  </li>
+</ul>
+`;
+
+exports[`<SuggestionList> shallow render with active suggestions 1`] = `
+<ul
+  className="SuggestionList"
+>
+  <li
+    className="SuggestionList__item"
+    key="Foo"
+    onClick={[Function]}
+  >
+    Foo
+  </li>
+  <li
+    className="SuggestionList__item--active"
+    key="Bar"
+    onClick={[Function]}
+  >
+    Bar
+  </li>
+</ul>
+`;
+
+exports[`<SuggestionList> shallow render with suggestions 1`] = `
+<ul
+  className="SuggestionList"
+>
+  <li
+    className="SuggestionList__item"
+    key="Foo"
+    onClick={[Function]}
+  >
+    Foo
+  </li>
+  <li
+    className="SuggestionList__item"
+    key="Bar"
+    onClick={[Function]}
+  >
+    Bar
+  </li>
+</ul>
+`;

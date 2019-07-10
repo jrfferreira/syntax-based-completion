@@ -6,7 +6,7 @@ module.exports = {
     "^.+\\.js$": "<rootDir>/tests/jest.transform.js",
     "\\.(css)$": "<rootDir>/node_modules/jest-transform-css"
   },
-  testRegex: "(/__tests__/.*|\\.(test|spec))\\.jsx?$",
+  testRegex: "src/.*(/__tests__/.*|\\.(test|spec))\\.jsx?$",
   moduleFileExtensions: ["js", "json", "jsx", "node"],
   coveragePathIgnorePatterns: ["\\.css", "index.js"],
   coverageThreshold: {
@@ -17,5 +17,6 @@ module.exports = {
       statements: 90
     }
   },
-  setupFiles: ["./tests/setup"]
+  setupFiles: ["./tests/setup"],
+  snapshotSerializers: ["enzyme-to-json/serializer"]
 };

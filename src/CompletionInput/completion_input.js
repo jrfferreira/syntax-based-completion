@@ -31,6 +31,7 @@ export default class CompletionInput extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.input = null;
     this.fetcher = null;
 
@@ -213,7 +214,8 @@ export default class CompletionInput extends React.Component {
   };
 
   onPressEnter = () => {
-    this.onSelect(this.state.suggestions[this.state.active]);
+    const selected = this.state.suggestions[this.state.active];
+    if (typeof selected !== "undefined") this.onSelect(selected);
   };
 
   onNavigate = e => {

@@ -75,11 +75,15 @@ Obs: UPPER_SNAKE_CASES definitions will be ignored on parser, improving performa
 onChange(newValue, currentNode)
 ```
 
+
 ### fetchSuggestions()
 
 ``` javascript
-onChange(newValue, currentNode) => Promise
+fetchSuggestions(currentNode) => Promise
 ```
+
+The property `fetchSuggestions` is called when the cursor position or the value changes.
+The function expects a promise that should `resolve` a list of suggestions or `reject` with a error message.
 
 ## Utils
 
@@ -120,7 +124,7 @@ Respects [ebnf](node-ebnf) `IToken` constructor.
 node.findChildByPosition(12)
 ```
 
-Returns the node matching the length position in the string or `itself`.
+Returns the child [Node](#node) matching the length position in the string or `itself`.
 
 #### findChildByType()
 
@@ -128,7 +132,7 @@ Returns the node matching the length position in the string or `itself`.
 node.findChildByType('operator')
 ```
 
-Returns the first child (or its children) matching the specified type or `false`.
+Returns the first child [Node](#node) (or its children) matching the specified type or `false`.
 
 #### findParentByType()
 
@@ -136,7 +140,7 @@ Returns the first child (or its children) matching the specified type or `false`
 node.findParentByType('word')
 ```
 
-Returns the first parent (or its parent) matching the specified type or `itself`.
+Returns the first parent [Node](#node) (or its parent) matching the specified type or `itself`.
 
 
 ## TODO

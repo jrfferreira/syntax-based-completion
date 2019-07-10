@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CompletionInput> shallow render empty 1`] = `
+<div
+  className="CompletionInput"
+>
+  <input
+    className=" CompletionInput__input"
+    delay={0}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onKeyUp={[Function]}
+    onMouseUp={[Function]}
+    placeholder="Parsing syntax..."
+    readOnly={true}
+    value=""
+  />
+</div>
+`;
+
+exports[`<CompletionInput> shallow render parsing syntax 1`] = `
+<div
+  className="CompletionInput"
+>
+  <input
+    className=" CompletionInput__input"
+    delay={0}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onKeyUp={[Function]}
+    onMouseUp={[Function]}
+    placeholder="Parsing syntax..."
+    readOnly={true}
+    value=""
+  />
+</div>
+`;
+
+exports[`<CompletionInput> shallow render showing suggestions 1`] = `
+<div
+  className="CompletionInput"
+>
+  <input
+    className=" CompletionInput__input"
+    delay={0}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onKeyUp={[Function]}
+    onMouseUp={[Function]}
+    value=""
+  />
+  <SuggestionList
+    active={0}
+    loading={false}
+    onMouseEnter={[Function]}
+    onMouseLeave={[Function]}
+    onSelect={[Function]}
+    selected={null}
+    suggestions={
+      Array [
+        "Foo",
+        "Bar",
+      ]
+    }
+  />
+</div>
+`;
+
+exports[`<CompletionInput> shallow render with error 1`] = `
+<div
+  className="CompletionInput"
+>
+  <input
+    className=" CompletionInput__input--error"
+    delay={0}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onKeyUp={[Function]}
+    onMouseUp={[Function]}
+    value="Foo /Invalid"
+  />
+  <div
+    className="CompletionInput__error"
+  >
+    Unexpected end of input: 
+/Invalid
+  </div>
+</div>
+`;
+
+exports[`<CompletionInput> shallow render with text 1`] = `
+<div
+  className="CompletionInput"
+>
+  <input
+    className=" CompletionInput__input"
+    delay={0}
+    onBlur={[Function]}
+    onChange={[Function]}
+    onKeyUp={[Function]}
+    onMouseUp={[Function]}
+    value="Foo #bar"
+  />
+</div>
+`;
