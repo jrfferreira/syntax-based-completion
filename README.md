@@ -17,10 +17,12 @@
 
 `syntax-based-completion` is a [React Component](react-component) (Form Input) that allows you to define a [BNF](bnf) syntax to validate the input value and suggest anything based on the syntax.
 
+Check the [demo](demo).
+
 ## BNF
 
 > In computer science, Backus–Naur form or Backus normal form (BNF) is a notation technique for context-free grammars, often used to describe the syntax of languages used in computing, such as computer programming languages, document formats, instruction sets and communication protocols. They are applied wherever exact descriptions of languages are needed: for instance, in official language specifications, in manuals, and in textbooks on programming language theory.
-> Source [Wikipedia](bnf)
+Source [Wikipedia](bnf)
 
 ## Installation
 
@@ -143,6 +145,7 @@ Returns the first parent (or its parent) matching the specified type or `itself`
 - Allow selection replacement;
 - Text styling;
 
+[demo]: https://jrfferreira.github.io/syntax-based-completion/demo/dist/
 [react-component]: https://reactjs.org/docs/react-component.html
 [node-ebnf]: https://github.com/lys-lang/node-ebnf
 [bnf]: https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form
