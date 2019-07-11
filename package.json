@@ -24,7 +24,8 @@
     "babel-runtime": "^6.26.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "ebnf": "^1.6.3"
   },
   "peerDependencies": {
     "ebnf": "^1.6.3",
