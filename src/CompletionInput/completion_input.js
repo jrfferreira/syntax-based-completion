@@ -14,8 +14,8 @@ export default class CompletionInput extends React.Component {
     delay: PropTypes.number,
     onChange: PropTypes.func,
     fetchSuggestions: PropTypes.func.isRequired,
-    className: PropTypes.className,
-    readOnly: PropTypes.boolean,
+    className: PropTypes.string,
+    readOnly: PropTypes.bool,
     placeholder: PropTypes.string
   };
 
@@ -53,12 +53,17 @@ export default class CompletionInput extends React.Component {
 
   // Helpers
 
+  getValue = () => {
+    return this.input ? this.input.value : this.props.value;
+  };
+
   setupParser = async () => {
     this.parser = new Parser(this.props.syntax);
-    const output = this.getOutput(this.props.value);
+    const output = this.getOutput(this.getValue());
     const error = this.checkForErrors(output);
 
     this.setState({
+      currentNode: output,
       output,
       error
     });
@@ -71,7 +76,7 @@ export default class CompletionInput extends React.Component {
     return null;
   };
 
-  delayAction = async action => {
+  debounce = async action => {
     clearTimeout(this.fetcher);
     this.fetcher = setTimeout(action, this.props.delay);
   };
@@ -88,10 +93,10 @@ export default class CompletionInput extends React.Component {
   getInputCursorPosition = () =>
     isFinite(this.input.selectionStart)
       ? this.input.selectionStart
-      : this.input.value.length;
+      : this.getValue().length;
 
   checkReferences = async (silent = false) => {
-    const sentence = this.input.value;
+    const sentence = this.getValue();
     const cursorPosition = this.getInputCursorPosition();
     const changedCursor = cursorPosition !== this.state.cursorPosition;
     const shouldUpdateOutput =
@@ -104,12 +109,12 @@ export default class CompletionInput extends React.Component {
           loading: true
         });
       }
-      return this.delayAction(() => this.updateReferences(silent));
+      return this.debounce(() => this.updateReferences(silent));
     }
   };
 
   updateReferences = (silent = false) => {
-    const output = this.getOutput(this.input.value);
+    const output = this.getOutput(this.getValue());
     const error = this.checkForErrors(output);
     const cursorPosition = this.getInputCursorPosition();
 
@@ -154,29 +159,30 @@ export default class CompletionInput extends React.Component {
 
   checkForSuggestions = async (currentNode = this.state.currentNode) => {
     this.setState({
+      error: null,
       showSuggestions: true,
       fetchingSuggestions: true
     });
 
-    if (!!this.props.fetchSuggestions) {
-      this.delayAction(() => {
-        this.props
-          .fetchSuggestions(currentNode)
-          .then((suggestions = []) => {
-            this.setState({
-              suggestions: this.sortSuggestions(suggestions),
-              fetchingSuggestions: false
-            });
-          })
-          .catch(() => {
-            this.setState({
-              suggestions: [],
-              showSuggestions: false,
-              fetchingSuggestions: false
-            });
-          });
+    const promise = this.props.fetchSuggestions(currentNode);
+
+    promise
+      .then((suggestions = []) => {
+        this.setState({
+          suggestions: this.sortSuggestions(suggestions),
+          fetchingSuggestions: false
+        });
+      })
+      .catch(error => {
+        this.setState({
+          error,
+          suggestions: [],
+          showSuggestions: false,
+          fetchingSuggestions: false
+        });
       });
-    }
+
+    return promise;
   };
 
   navigateDown = () => {
@@ -230,8 +236,8 @@ export default class CompletionInput extends React.Component {
   };
 
   onChange = () => {
-    this.delayAction(this.checkReferences);
-    if (this.props.onChange) this.props.onChange(this.input.value);
+    this.debounce(this.checkReferences);
+    if (this.props.onChange) this.props.onChange(this.getValue());
   };
 
   onKeyUp = e => {
@@ -264,7 +270,7 @@ export default class CompletionInput extends React.Component {
   };
 
   onSelect = (newValue = "") => {
-    const sentence = this.props.value;
+    const sentence = this.getValue();
     const node = this.state.currentNode;
     const newSentence =
       "" +
