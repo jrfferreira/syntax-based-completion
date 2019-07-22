@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Parser } from "../utils";
+import { Parser, Node } from "../utils";
 
 import "./completion_input.css";
 
@@ -8,6 +8,9 @@ import SuggestionList from "../SuggestionList";
 import { COMMANDS, DELAY, STEPS } from "../constants";
 
 export default class CompletionInput extends React.Component {
+  static Parser = Parser;
+  static Node = Node;
+
   static propTypes = {
     syntax: PropTypes.string.isRequired,
     value: PropTypes.string,
@@ -58,7 +61,7 @@ export default class CompletionInput extends React.Component {
   };
 
   setupParser = async () => {
-    this.parser = new Parser(this.props.syntax);
+    this.parser = new CompletionInput.Parser(this.props.syntax);
     const output = this.getOutput(this.getValue());
     const error = this.checkForErrors(output);
 
