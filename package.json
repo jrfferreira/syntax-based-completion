@@ -50,7 +50,7 @@
     "eslint-plugin-react": "^7.14.2",
     "jest": "^24.8.0",
     "jest-transform-css": "^2.0.0",
-    "nwb": "0.23.x"
+    "nwb": "0.25.x"
   },
   "author": "jrfferreira",
   "homepage": "https://github.com/jrfferreira/syntax-based-completion#readme",
